@@ -70,6 +70,7 @@ export const loginController = async (req, res) => {
          success: true,
          message: 'login success',
          user: {
+            user_id: user._id,
             email: user.email,
             name: user.name,
             role: user.role,
@@ -87,6 +88,16 @@ export const loginController = async (req, res) => {
 export const testController = async (req, res) => {
    try {
       res.send('Protected Routes and Admin')
+   } catch (error) {
+      console.log(error)
+      res.send({ error })
+   }
+}
+
+export const changeProfile = async (req, res) => {
+   try {
+      const result = await userModel.findByIdAndUpdate(req.user._id, { role: req.body.role })
+      res.send(result)
    } catch (error) {
       console.log(error)
       res.send({ error })

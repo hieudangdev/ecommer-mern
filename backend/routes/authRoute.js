@@ -1,5 +1,5 @@
 import express from 'express'
-import { loginController, registerController, testController } from './../controllers/authController.js'
+import { changeProfile, loginController, registerController, testController } from './../controllers/authController.js'
 import { isAdmin, requireJWT } from '../middlewares/authMiddlewares.js'
 
 const router = express.Router()
@@ -7,8 +7,6 @@ const router = express.Router()
 router.post('/register', registerController)
 router.post('/login', loginController)
 router.get('/test', requireJWT, isAdmin, testController)
-router.get('/get', (req, res) => {
-   return res.send('ngu')
-})
+router.post('/changeprofile', requireJWT, changeProfile)
 
 export default router

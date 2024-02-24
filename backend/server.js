@@ -6,7 +6,7 @@ import authRoutes from './routes/authRoute.js'
 
 const app = express()
 
-// config dotenv
+// config dotenv-
 dotenv.config()
 
 // database config
