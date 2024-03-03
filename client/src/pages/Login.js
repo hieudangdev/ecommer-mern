@@ -1,26 +1,31 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useAuth } from "../customHook/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [auth, setAuth] = useAuth();
   const [loginError, setLoginError] = useState("");
-  const navigate = useNavigate();
 
-  async function callApi(data) {
-    const res = await fetch("http://localhost:8080/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    await axios
+      .post("http://localhost:8080/api/auth/login", {
+        email,
+        password,
+      })
       .then((response) => {
-        if (response.ok) {
+        if (response.data && response) {
           // Chuyển hướng đến trang chủ
-          navigate("/");
+          setAuth({
+            ...auth,
+            user: response.data.user,
+            token: response.data.token,
+          });
+          setLoginError("Login Successful");
         } else {
           response.json().then((errorData) => {
             setLoginError(errorData.message);
@@ -31,20 +36,6 @@ const Login = () => {
         console.log(error);
         setLoginError("Đăng nhập thất bại!");
       });
-    return res;
-  }
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const data = {
-      email: email,
-      password: password,
-    };
-    callApi(data);
-    console.log(data);
-
-    try {
-    } catch (error) {}
   };
 
   return (

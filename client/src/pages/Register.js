@@ -10,20 +10,20 @@ const Register = () => {
   const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     const data = {
       email,
       password,
       name,
     };
 
-    axios
-      .post("http://localhost:8080/api/register", data)
+    await axios
+      .post("http://localhost:8080/api/auth/register", data)
       .then((response) => {
         if (response.data.success) {
           // Lưu trữ thông tin người dùng
+          console.log("Register Successfull", response.data);
           // Chuyển hướng đến trang chủ
           navigate("/");
         } else {
